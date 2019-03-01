@@ -1,0 +1,123 @@
+{
+  "name": "Фотостудия",
+
+  "pagesTitle": {
+    "auth": "Авторизация",
+    "referenceBook": "Справочники",
+    "referenceBookUsers": "Пользователи"
+  },
+
+  "btns" : {
+    "enter": "Вход"
+  },
+
+  "labels": {
+    "login": "Логин",
+    "password": "Пароль",
+    "users": "Пользователи"
+  },
+
+  "errors": {
+    "auth": "Неверно введен логин или пароль!"
+  },
+
+
+
+
+  "messageCode": {
+    "photo_for_retouch_exists": "В КТ есть снимки в статусе «На ретуши»",
+    "photo_ready_not_exists": " В КТ нет снимов в статусе «Готовые»",
+    "ware_color_model_not_found": "Цветомодель не найдена",
+    "no_photographer_selected": "Не выбран фотограф",
+    "photo_for_retouching_not_found" : "Фотографии для ретуши не найдены",
+    "duplicate_key_exception" : "Карточка товара с указанной цветомоделью уже создана",
+    "username_or_password_not_provided" : "Имя пользователя или пароль не указаны",
+    "invalid_username_or_password" : "Неправильное имя пользователя или пароль"
+  },
+
+  "UserException" : {
+    "ware_color_model_not_found": "Цветомодель не найдена",
+    "no_photographer_selected": "Не выбран фотограф",
+    "photo_for_retouching_not_found" : "Фотографии для ретуши не найдены"
+  },
+
+
+
+  "SERVER_ERROR": {
+    "LABEL": "Ошибка на сервере"
+  },
+
+
+  "CARD_LIST": "Список карточек",
+  "TEST" : {
+    "CARD": "Карточка"
+  },
+
+  "WARECARD": "Список карточек",
+  "TABLE_KEY": {
+    "WARE_CARD": {
+      "perspectiveGroupName": "Атрибутный класс",
+      "wareColorModel": "Цветомодель",
+      "wareColorModelName": "Наименование цветомодели",
+      "wareCardInternalNumber": "№",
+      "wareCardCode": "Код",
+      "gateSitesGroupName": "Сайт",
+      "creatorUserName": "Создал",
+      "wareCardCreateDate": "Дата создания",
+      "articleNumberList" : "Артикулы",
+      "barcodeList" : "Штрих-кода",
+      "wareCardStatusName": "Статус",
+      "guidList": "GUID"
+    }
+  },
+
+
+  "EDIT_CARD" : "Редактирование карточки",
+  "TOTAL_PHOTOS": "Всего фотографий",
+
+  "STATUS" : {
+    "BLOCK": {
+      "checking": "На проверке",
+      "retouching": "На ретуши",
+      "retouched": "Отретушированные",
+      "defective": "Забракованные",
+      "ready": "Готовые"
+    },
+    "KT": {
+      "shooting": "На съёмке",
+      "checking": "На проверке",
+      "more_shooting": "На пересъёмке",
+      "identification": "На идентификации",
+      "retouching": "На ретуши",
+      "retouch_checking": "Проверка ретуши",
+      "ready_for_MDM": "Готова к отправке в МДМ",
+      "closed": "Закрыта",
+      "archived": "Архивирована",
+      "deleted": "Удалена",
+      "export_error": "Ошибка отправки"
+    }
+
+  },
+
+
+
+
+
+  "TABLE": {
+    "ACCOUNT": {
+      "login": "Логин",
+      "lastName": "Имя",
+      "firstName": "Фамилия",
+      "patronymic": "Oтчество",
+      "email": "Емайл",
+      "isLocked": "Блокировка",
+      "accountRoleDtoList": "Роли",
+      "password": "Пароль"
+    }
+  },
+  "BTN": {
+    "CREATE": "Создать"
+  }
+
+
+}
