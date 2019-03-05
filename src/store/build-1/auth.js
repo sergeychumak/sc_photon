@@ -41,25 +41,20 @@ const actions = {
               "password": inData.password
             }
           };
-          
+
           axios(options)
-          .then(res => {
-
-            commit("set_errors")
-            commit("set_accessToken", res.data.data.accessToken)
-            commit("set_refreshToken", res.data.data.refreshToken)
-            commit("set_type", res.data.data.type)
-
-            dispatch('toggleInProcess')
-
-            axios.defaults.headers.common['Authorization'] = res.data.data.type + res.data.data.accessToken
-
-            resolve()
-
-          })
-          .catch(error=>{
-            commit("set_errors", error.response.data.messageCode)
-          })
+            .then(res => {
+              commit("set_errors")
+              commit("set_accessToken", res.data.data.accessToken)
+              commit("set_refreshToken", res.data.data.refreshToken)
+              commit("set_type", res.data.data.type)
+              dispatch('toggleInProcess')
+              axios.defaults.headers.common['Authorization'] = res.data.data.type + res.data.data.accessToken
+              resolve()
+            })
+            .catch(error=>{
+              commit("set_errors", error.response.data.messageCode)
+            })
 
         })
 
@@ -79,40 +74,6 @@ const actions = {
       }
     })
   },
-
-  refresh: ({dispatch, state, commit}, inData) => {
-    console.log(state.accessToken)
-    console.log(state.refreshToken)
-    return new Promise((resolve, reject) => {
-      dispatch("master/get_url", {url: "auth.refresh"}, {root: true})
-        .then(url => {
-          axios.defaults.headers.common['Authorization'] = state.type + state.refreshToken
-          let options = {
-            url: url,
-            method: 'GET',
-            headers: {
-              'Cache-Control': 'no-cache',
-              'Content-type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest'
-            },
-          };
-          axios(options)
-            .then(res => {
-              commit("set_errors")
-              commit("set_accessToken", res.data.data.accessToken)
-              commit("set_refreshToken", res.data.data.refreshToken)
-              commit("set_type", res.data.data.type)
-              axios.defaults.headers.common['Authorization'] = res.data.data.type + res.data.data.accessToken
-
-              console.log(res.data.data.accessToken)
-
-              resolve()
-            })
-        })
-    })
-
-
-  },
   toggleInProcess: ({commit}) => {
     commit('toggleInProcess')
   }
@@ -131,17 +92,7 @@ const mutations = {
   set_accessToken: (state, data) => { state.accessToken = data },
   set_refreshToken: (state, data) => { state.refreshToken = data },
   set_type: (state, data) => { state.type = data },
-  toggleInProcess: (state) => { state.inProcess = !state.inProcess },
-
-  SET_TOKEN: (state, token) => {
-    state.token = token
-    state.error = false
-  },
-  SET_ERROR: (state, token) => {
-    state.token = ''
-    state.error = true
-  },
-
+  toggleInProcess: (state) => { state.inProcess = !state.inProcess }
 }
 
 export default  {

@@ -21,7 +21,8 @@ const store = new Vuex.Store({
     createPersistedState({
       key: 'PHOTOSTUDIO',
       paths: [
-        'auth'
+        'auth.accessToken',
+        'auth.type'
       ]
     })
   ],
