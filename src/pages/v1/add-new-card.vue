@@ -20,34 +20,41 @@
 
       <div class="pl-4 pt-2 pb-2" style="max-width: 500px;">
 
-        <h3 class="mb-2">Тип создания</h3>
-          <v-select
-            v-model="form.type"
-            :items="list.type"
-            solo
-            item-text="label"
-            item-value="id"
-            hide-details
-          ></v-select>
+        <div class="mt-4">
+          <FieldTitleComponent textCode="typeCreate"></FieldTitleComponent>
+          <SelectComponent
+            :list="typeCreateList"
+            itemText="label"
+            itemValue="id"
+            :currentValue.sync="typeCreateId"
+          ></SelectComponent>
+        </div>
 
-        <h3 class="mb-2 mt-3">Сайт</h3>
-          <v-select
-            v-model="form.gateSitesGroupCode"
-            :items="list.gateSitesGroupCode"
-            solo
-            item-text="name"
-            item-value="name"
-            hide-details
-          ></v-select>
+        <div class="mt-4">
+          <FieldTitleComponent textCode="contentBackground"></FieldTitleComponent>
+          <AutocompleteComponent
+            :list="contentBackgroundList"
+            itemText="name"
+            itemValue="code"
+            :currentValue.sync="contentBackground"
+          ></AutocompleteComponent>
+        </div>
 
-        <div v-if="form.type!=='guid'">
-          <h3 class="mb-2 mt-3" >Значение</h3>
-            <v-text-field solo v-model="form.value" hide-details></v-text-field>
+
+        <div v-if="typeCreateCode!=='guid'" class="mt-4">
+          <FieldTitleComponent textCode="value"></FieldTitleComponent>
+           <v-text-field solo v-model="valueData" hide-details></v-text-field>
         </div>
 
       </div>
 
 
+    </v-flex>
+
+    <v-flex shrink>
+      <v-alert :value="errorFlag" type="error">
+        {{errorMessage}}
+      </v-alert>
     </v-flex>
 
   </v-layout>
@@ -56,36 +63,52 @@
 
 <script>
   import {mapActions} from 'vuex'
+
+  import atomSelectComponent from "@/components/atoms/select"
+  import atomFieldTitleComponent from "@/components/atoms/fieldTitle"
+  import atomAutocompleteComponent from "@/components/atoms/autocomplete"
+
   export default {
     name: 'add-new-card',
+    components: {
+      SelectComponent: atomSelectComponent,
+      FieldTitleComponent: atomFieldTitleComponent,
+      AutocompleteComponent: atomAutocompleteComponent
+    },
     data: function(){
       return {
-        form: {
-          type: null,
-          gateSitesGroupCode: null,
-          value: null
-        },
-        list: {
-          type: [
-            {id:"article",label:"По артиклу "},
-            {id:"code",label:"По шрих коду "},
-            {id:"colormodel",label:"По цветомодели "},
-            {id:"guid",label:"По guid "}
-          ],
-          gateSitesGroupCode: []
-        }
+        typeCreateId : null,
+        typeCreateList: [
+          {id:1, code:"article",label:"По артиклу "},
+          {id:2, code:"code",label:"По шрих коду "},
+          {id:3, code:"colormodel",label:"По цветомодели "},
+          {id:4, code:"guid",label:"По guid "}
+        ],
+
+        valueData: "",
+
+        contentBackground: null,
+        contentBackgroundList: [],
+
+        errorFlag: false,
+        errorMessage: ""
+
       }
     },
-    mounted: function(){
-      this.GET_REQUEST({url:"gateSitesGroup.list"}).then((res) => {
-        this.$set(this.list, 'gateSitesGroupCode', res.data)
-      })
-    },
     methods:{
-      ...mapActions("main", {
-        POST_REQUEST: "postRequest",
-        GET_REQUEST: "getRequest"
+
+      ...mapActions("wareCardController", {
+        createWareCardByArticleNumber: "createWareCardByArticleNumber",
+        createWareCardByBarCode: "createWareCardByBarCode",
+        createWareCardByColorModel: "createWareCardByColorModel",
+        createWareCardByInternalGUID: "createWareCardByInternalGUID"
       }),
+
+      ...mapActions("refController", {
+        getContentBackgroundList: "getContentBackgroundList"
+      }),
+
+
       back: function(){
         if (window.history.state === null){
           this.$router.push({name:"card-list"})
@@ -94,29 +117,73 @@
         }
       },
       save: function(){
-        this.POST_REQUEST({
-          url: 'wareCard.create.by-' + this.form.type,
-          data: {
-            "userName": "",
-            "value": this.form.value,
-            "gateSitesGroupName": this.form.gateSitesGroupCode,
-            "ignoreMdmValidation": this.ignoreMdmValidation
-          }
-        })
-        .then(()=>{this.back()})
+
+        this.errorFlag = false
+
+        let payload = {
+          "contentBackgroundCode": this.contentBackground,
+          "ignoreMdmValidation": this.ignoreMdmValidation,
+          "value": this.valueData
+        }
+
+        switch (this.typeCreateCode) {
+          case "article":
+            this.createWareCardByArticleNumber(payload)
+              .then(()=>{this.back()})
+              .catch(messageCode => {
+                this.errorFlag = true
+                this.errorMessage = this.$t('messageCode.' + messageCode)
+              })
+          break
+          case "code":
+            this.createWareCardByBarCode(payload)
+              .then(()=>{this.back()})
+              .catch(messageCode => {
+                this.errorFlag = true
+                this.errorMessage = this.$t('messageCode.' + messageCode)
+              })
+          break
+          case "colormodel":
+            this.createWareCardByColorModel(payload)
+              .then(()=>{this.back()})
+              .catch(messageCode => {
+                this.errorFlag = true
+                this.errorMessage = this.$t('messageCode.' + messageCode)
+              })
+          break
+          case "guid":
+            this.createWareCardByInternalGUID(payload)
+              .then(()=>{this.back()})
+              .catch(messageCode => {
+                this.errorFlag = true
+                this.errorMessage = this.$t('messageCode.' + messageCode)
+              })
+          break
+        }
+
       }
     },
     computed: {
-      ignoreMdmValidation: function(){
-        return this.form.type === "code"
+
+      typeCreateCode: function(){
+        if ( this.typeCreateId !==null ){
+          return this.typeCreateList.filter(el=>{
+            return el.id == this.typeCreateId
+          })[0].code
+        }
       },
+
+      ignoreMdmValidation: function(){
+        return this.typeCreateCode === "code"
+      },
+
       disabledButtonSave: function(){
         var res = true
-        if (this.form.type!==null && this.form.gateSitesGroupCode!==null){
-          if(this.form.type==='guid'){
+        if (this.typeCreateId!==null){
+          if(this.typeCreateCode==='guid'){
             res = false
           }else{
-            if (this.form.value===null || this.form.value === ""){
+            if (this.valueData===null || this.valueData === ""){
               res = true
             }else{
               res = false
@@ -125,6 +192,12 @@
         }
         return res
       }
+
+    },
+    mounted: function(){
+      this.getContentBackgroundList().then(res => {
+        this.contentBackgroundList = res
+      })
     }
   }
 

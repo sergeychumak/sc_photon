@@ -3,20 +3,72 @@ const state = {
 
   // v1
   "v1":{
+
+    "account-controller" : {
+      "createAccount": "api/account",
+      "updateAccount": "api/account",
+      "getCurrentAccountUser": "api/account/current",
+      "updatePassword": "api/account/password",
+      "getAccountUserPhotographerList": "api/account/photographer/table/body",
+      "getAccountUserRetoucherList": "api/account/retoucher/table/body",
+      "getAccountUserList": "api/account/table/body",
+      "getAccountUserTableHeader": "/api/account/table/header"
+    },
+    "account-role-controller" : {
+      "getRoleList": "api/account/role/table/body"
+    },
+    "ref-controller": {
+      "getContentBackgroundList": "api/ref/contentBackground/table/body",
+      "getContentSourceList": "api/ref/contentSource/table/body",
+      "updateParamList": "api/ref/parameter",
+      "getParam": "api/ref/parameter",
+      "getParamList": "api/ref/parameter/table/body",
+      "getPerspectiveViewListByWareCard": "api/ref/perspectiveView/table/body",
+      "getWareCardStatusList": "api/ref/wareCardStatus/table/body"
+    },
+
+    "ware-card-controller": {
+      "getWareCardDetail": "api/wareCard/detail",
+      "deleteRetouchingSample": "api/wareCard/retouchingSample",
+      "getRetouchingSampleList": "api/wareCard/retouchingSample",
+      "getWareCardList": "api/wareCard/table/body",
+      "getWareCardTableHeader": "api/wareCard/table/header",
+      "createWareCardByArticleNumber": "api/wareCard/wareCardByArticleNumber",
+      "createWareCardByBarCode": "api/wareCard/wareCardByBarCode",
+      "createWareCardByColorModel": "api/wareCard/wareCardByColorModel",
+      "createWareCardByExternalGUID": "api/wareCard/wareCardByExternalGUID",
+      "createWareCardByInternalGUID": "api/wareCard/wareCardByInternalGUID",
+      "updateWareCardColorModel": "api/wareCard/WareCardColorModel",
+      "updateWareCardStatus": "api/wareCard/wareCardStatus"
+    },
+    "retouch-controller":{
+      "validateZipFileRequest": "api/retouch/zipFile/request/validate",
+      "getRetouchZipFile": "api/retouch/zipFile"
+    },
+    "photo-controller": {
+      "getPhotoBlockList": "api/photo/block/table/body"
+    },
+
+
+
+
+
+
     "auth": {
       "login": "api/auth/login",
       "refresh": "api/auth/token/refresh"
     },
 
-
+    "ref": {
+      "getContentBackgroundList" : "api/ref/contentBackground/table/body"
+    },
 
     "account": {
       "list": "api/account/table/body",
-      "tableHeader": "api/account/table/header", // -- Столбцы для списока пользователей
-      "tableBody": "api/account/table/body" // -- Список всех пользователей
-    },
-    "photographer": {
-      "list": "api/account/photographer/table/body"
+      "photographerList": "api/account/photographer/table/body",
+      "tableHeader": "api/account/table/header",
+      "tableBody": "api/account/table/body",
+      "getCurrentAccountUser": "api/account/current" // GET
     },
     "wareCard": {
       "status": "api/ref/wareCardStatus/table/body",

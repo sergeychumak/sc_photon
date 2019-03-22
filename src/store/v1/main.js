@@ -20,11 +20,9 @@ const actions = {
         method: 'POST'
       })
         .then (res=>{
-          console.log(88)
           resolve(res.data)
         })
         .catch(error=>{
-          console.log(99)
           dispatch('errorHandler',error.response)
           reject()
         })

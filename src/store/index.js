@@ -12,6 +12,17 @@ import snackbar from "./v1/snackbar"
 import master from "./build-1/master"
 import auth from "./build-1/auth"
 
+
+
+import account from "./modules/account"
+
+import accountController from "./controllers/account-controller"
+import accountRoleController from "./controllers/account-role-controller"
+import refController from "./controllers/ref-controller"
+import wareCardController from "./controllers/ware-card-controller"
+import retouchController from "./controllers/retouch-controller"
+import photoController from "./controllers/photo-controller"
+
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -21,8 +32,7 @@ const store = new Vuex.Store({
     createPersistedState({
       key: 'PHOTOSTUDIO',
       paths: [
-        'auth.accessToken',
-        'auth.type'
+        'auth.token'
       ]
     })
   ],
@@ -33,7 +43,14 @@ const store = new Vuex.Store({
     retouch,
     snackbar,
     master,
-    auth
+    auth,
+    account,
+    accountController,
+    accountRoleController,
+    refController,
+    wareCardController,
+    photoController,
+    retouchController
   },
   state: {},
   actions: {

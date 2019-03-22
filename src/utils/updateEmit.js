@@ -44,10 +44,16 @@ export const UpdateEmit = {
     },
     __insertHook: function(refs){
       if (Object.keys(this.$refs).length > 0){
-        this.$refs.isHook__Name_main.innerHTML = ""
+
+        if (this.$refs.isHook__Name_main)
+          this.$refs.isHook__Name_main.innerHTML = ""
+
         if (refs.isHook__Name)
           this.$refs.isHook__Name_main.appendChild(refs.isHook__Name)
-        this.$refs.isHook__Actions_main.innerHTML = ""
+
+        if (this.$refs.isHook__Actions_main)
+          this.$refs.isHook__Actions_main.innerHTML = ""
+
         if (refs.isHook__Actions)
           this.$refs.isHook__Actions_main.appendChild(refs.isHook__Actions)
       }

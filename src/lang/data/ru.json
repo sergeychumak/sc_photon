@@ -4,23 +4,39 @@
   "pagesTitle": {
     "auth": "Авторизация",
     "referenceBook": "Справочники",
-    "referenceBookUsers": "Пользователи"
+      "referenceBookUsers": "Пользователи",
+      "referenceBookRoles": "Роли пользователей",
+    "referenceBookEditItem": "Редактирование элемента"
   },
 
   "btns" : {
-    "enter": "Вход"
+    "enter": "Вход",
+    "save": "Сохранить",
+    "cancel": "Отмена"
   },
 
   "labels": {
     "login": "Логин",
     "password": "Пароль",
-    "users": "Пользователи"
+    "users": "Пользователи",
+    "roles": "Роли"
   },
 
   "errors": {
     "auth": "Неверно введен логин или пароль!"
   },
 
+
+  "FIELD_TITLE": {
+    "contentBackground": "Брендбук",
+    "created": "Создал",
+    "photographer": "Фотограф",
+    "dateBegin": "Дата от",
+    "dateEnd": "Дата до",
+    "status": "Статус",
+    "typeCreate": "Тип создания",
+    "value": "Значение"
+  },
 
 
 
@@ -55,6 +71,20 @@
 
   "WARECARD": "Список карточек",
   "TABLE_KEY": {
+    "ROLES": {
+      "accountRoleCode": "Код",
+      "accountRoleName": "Название"
+    },
+    "USERS": {
+      "accountUserCode": "Код",
+      "email": "Email",
+      "lastName": "Фамилия",
+      "firstName": "Имя",
+      "patronymic": "Отчество",
+      "login": "Логин",
+      "isLocked": "Активен",
+      "accountRoleDtoList": "Роли"
+    },
     "WARE_CARD": {
       "perspectiveGroupName": "Атрибутный класс",
       "wareColorModel": "Цветомодель",
@@ -67,7 +97,8 @@
       "articleNumberList" : "Артикулы",
       "barcodeList" : "Штрих-кода",
       "wareCardStatusName": "Статус",
-      "guidList": "GUID"
+      "guidList": "GUID",
+      "contentBackgroundName": "Брендбук"
     }
   },
 

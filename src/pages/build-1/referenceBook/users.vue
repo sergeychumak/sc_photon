@@ -18,103 +18,100 @@
     </v-flex>
 
     <v-flex>
-
-      <Table
-        :headersKey="tableKey"
-        :headers="tableHeaders"
-        :body="tableBody"
-      ></Table>
-
-
+      <TableTestComponent
+        :headers="headers"
+        :data="data"
+        :canBeEdit=true
+        v-on:detected-change="detectedChange"
+      ></TableTestComponent>
     </v-flex>
-
-    <v-dialog fullscreen v-model="dialog.addNew" width="500">
-      <v-card>
-        <FromAddNewUser
-          v-on:create="createUser"
-        ></FromAddNewUser>
-      </v-card>
-    </v-dialog>
-
-
   </v-layout>
 </template>
 
 <script>
   import {mapActions} from 'vuex'
-
-  import TableComponent from "@/components/build-1/table/wrap"
-
-  import FromAddNewUser from "./users/form/add"
-
+  import TableTestComponent from "@/components/table/table"
   export default {
     name: 'page-reference-book-user',
     components: {
-      Table: TableComponent,
-      FromAddNewUser: FromAddNewUser
+      TableTestComponent: TableTestComponent
     },
     data: function(){
       return {
-        tableKey: "",
-        tableHeaders: [],
-        tableBody: [],
+        headers: [
+          {
+            key: "accountUserCode",
+            label: this.$t("TABLE_KEY.USERS.accountUserCode"),
+            type: "String",
+            width: '50px',
+            disableEdit: true
+          },
+          {
+            key: "login",
+            label: this.$t("TABLE_KEY.USERS.login"),
+            type: "String",
+            disableEdit: true
+          },
+          {
+            key: "email",
+            label: this.$t("TABLE_KEY.USERS.email"),
+            type: "Email",
+          },
+          {
+            key: "lastName",
+            label: this.$t("TABLE_KEY.USERS.lastName"),
+            type: "String"
+          },
+          {
+            key: "firstName",
+            label: this.$t("TABLE_KEY.USERS.firstName"),
+            type: "String"
+          },
+          {
+            key: "patronymic",
+            label: this.$t("TABLE_KEY.USERS.patronymic"),
+            type: "String"
+          },
+          {
+            key: "accountRoleDtoList",
+            label: this.$t("TABLE_KEY.USERS.accountRoleDtoList"),
+            type: "ArrayObjects",
+            payload: {
+              url: "accountRoleController/getRoleList",
+              text: "accountRoleName",
+              value: "accountRoleCode"
+            }
+          },
+          {
+            key: "isLocked",
+            label: this.$t("TABLE_KEY.USERS.isLocked"),
+            type: "BooleanRevert",
+            width: '50px'
+          },
 
-        dialog: {
-          addNew: false
-        }
-
+        ],
+        data: []
       }
     },
 
     methods: {
-      ...mapActions("main", {
-        GET_REQUEST: "getRequest"
+      ...mapActions("accountController", {
+        getAccountUserList: "getAccountUserList",
+        updateAccount: "updateAccount"
       }),
 
-      createUser: function () {
-        console.log('createUser')
+      detectedChange: function (payload) {
+        console.log(payload)
+        // this.updateAccount(payload)
+
       }
-      
     },
 
     mounted: function(){
-      this.GET_REQUEST({url: "account.tableHeader"})
-      .then(res=>{
-        this.tableKey = res.key
-        this.tableHeaders = res.headers
-      })
-      this.GET_REQUEST({url: "account.tableBody"})
-      .then(res=>{
-        this.tableBody = res.data
+      this.getAccountUserList().then(res => {
+        this.data = res
       })
     }
-
 
   }
 </script>
-
-<style lang="scss" scoped1>
-
-  .posabs {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-  }
-
-  .isTableComponent {
-    @extend .posabs;
-    background: #fff;
-    &Wrap {
-      @extend .posabs;
-      & > div.v-table__overflow {
-        overflow: auto;
-        @extend .posabs;
-      }
-    }
-  }
-
-
-</style>

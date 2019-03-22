@@ -205,16 +205,17 @@
           for (let x in this.items) {
             if (!isNaN(x)) {
 
+              // console.log(this.postHeader)
+              
               var formData = new FormData();
               formData.append('file', this.items[x]);
               formData.append('wareCardCode', this.wareCardCode);
               formData.append('userName', '');
-
               axios({
                 method: this.method,
                 url: this.postURL,
-                data: formData,
-                headers:this.postHeader
+                data: formData
+                // headers:this.postHeader
               })
                 .then(res => {
                   countComplete = countComplete + 1

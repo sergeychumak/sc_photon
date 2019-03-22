@@ -30,6 +30,7 @@ import pagePerspective from '../pages/v1/perspective'
 
 import pageRreferenceBook from '../pages/build-1/referenceBook'
 import pageRreferenceBookUsers from '../pages/build-1/referenceBook/users'
+import pageRreferenceBookRoles from '../pages/build-1/referenceBook/roles'
 
 // router
 // -------------------------------------------------------------------------
@@ -88,7 +89,8 @@ export default new Router({
           path: 'reference-book',
           component: pageRreferenceBook,
           children: [
-            { name: 'referenceBookUsers', path: 'users', component: pageRreferenceBookUsers }
+            { name: 'referenceBookUsers', path: 'users', component: pageRreferenceBookUsers },
+            { name: 'referenceBookRoles', path: 'roles', component: pageRreferenceBookRoles },
           ]
         }
       ]

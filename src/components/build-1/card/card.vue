@@ -1,6 +1,6 @@
 <template>
   <v-layout class="isCard" column>
-    <v-flex shrink class="isCard__image" :style="styleImage"></v-flex>
+    <v-flex shrink class="isCard__image" :style="asd"></v-flex>
     <v-flex class="isCard__buttons">
       <v-layout row>
         <v-flex>
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+  import axios from "axios";
   export default {
     name: 'card-component',
     props: {
@@ -74,7 +75,12 @@
     },
     data: function(){
       return {
+        realImage: '',
+        contentType: ""
       }
+    },
+    mounted: function(){
+      this.getImage()
     },
     methods: {
       check: function(){
@@ -89,13 +95,24 @@
       original: function(){
         this.$emit('btn-original', this.index)
       },
+      getImage: function(){
+        axios({
+          url: this.image,
+          method: 'GET',
+          responseType: 'arraybuffer'
+        })
+          .then(res => {
+            this.contentType = res.headers['content-type']
+            this.realImage = new Buffer(res.data, 'binary').toString('base64')
+          })
+      }
     },
     computed:{
-      styleImage: function(){
-        return {
-          backgroundImage: 'url(' + this.image + ')'
-        }
-      }
+     asd: function(){
+       return {
+         backgroundImage: 'url(data:' + this.contentType + ';base64,' + this.realImage + ')'
+       }
+     }
     }
   }
 </script>

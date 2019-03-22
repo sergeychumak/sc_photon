@@ -2,97 +2,116 @@ import axios from 'axios'
 import i18n from '@/lang/lang'
 
 const state = {
-  inProcess: false,
-  accessToken: "",
-  refreshToken: "",
-  type: "",
 
+  loading: false,
 
-  error: false,
-  errorText: ""
+  token: {
+    type: "",
+    access: "",
+    refresh: ""
+  },
+
+  error: {
+    detect: false,
+    message: ""
+  }
+
 }
 
 const getters = {
-  error: state => state.error,
-  errorText: state => state.errorText,
-  isAuthenticated: state => !!state.accessToken,
-  inProcess: state => state.inProcess
+  loading: state => state.loading,
+  error_detect: state => state.error.detect,
+  error_message: state => state.error.message,
+  isAuthenticated: state => !!state.token.access
 }
 
 const actions = {
   login: ({dispatch, commit }, inData) => {
     return new Promise((resolve, reject) => {
 
-      dispatch('toggleInProcess')
+      commit(
+        'loading',
+        true
+      )
 
-      dispatch( "master/get_url", { url: "auth.login" }, { root: true } )
-        .then(url=>{
+      dispatch(
+        "master/get_url",
+        { url: "auth.login" },
+        { root: true }
+      )
+      .then(url=>{
 
-          let options = {
-            url: url,
-            method: 'POST',
-            headers: {
-              'Cache-Control': 'no-cache',
-              'Content-type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest'
-            },
-            data: {
-              "userName": inData.username,
-              "password": inData.password
-            }
-          };
-
-          axios(options)
-            .then(res => {
-              commit("set_errors")
-              commit("set_accessToken", res.data.data.accessToken)
-              commit("set_refreshToken", res.data.data.refreshToken)
-              commit("set_type", res.data.data.type)
-              dispatch('toggleInProcess')
-              axios.defaults.headers.common['Authorization'] = res.data.data.type + res.data.data.accessToken
-              resolve()
-            })
-            .catch(error=>{
-              commit("set_errors", error.response.data.messageCode)
-            })
-
+        axios({
+          url: url,
+          method: 'POST',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Content-type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          data: {
+            "userName": inData.username,
+            "password": inData.password
+          }
         })
-
+        .then(res=>{
+          commit('token_access', res.data.data.accessToken)
+          commit('token_refresh', res.data.data.refreshToken)
+          commit('token_type', res.data.data.type)
+          commit('loading', false)
+          axios.defaults.headers.common['Authorization'] = res.data.data.type + res.data.data.accessToken
+          resolve()
+        })
+        .catch(error=>{
+          commit('error_detect', true)
+          commit('error_message', error.response.data.messageCode)
+          commit('loading', false)
+          reject()
+        })
+      })
+      .catch(res=>{
+        console.warn(res)
+      })
     })
   },
-  
   logout: ({commit}) => {
     return new Promise((resolve) => {
       const PHOTOSTUDIO = localStorage.getItem('PHOTOSTUDIO')
       if (PHOTOSTUDIO) {
         localStorage.PHOTOSTUDIO = ""
-        commit("set_errors")
-        commit("set_accessToken", "")
-        commit("set_refreshToken", "")
-        commit("set_type", "")
+        commit("error_detect")
+        commit("error_message")
+        commit("token_access")
+        commit("token_refresh")
+        commit("token_type")
         resolve()
       }
     })
   },
-  toggleInProcess: ({commit}) => {
-    commit('toggleInProcess')
-  }
 }
 
 const mutations = {
-  set_errors: (state, errorType = null) => {
-    if (errorType){
-      state.error = true
-      state.errorText = i18n.t('messageCode.' + errorType)
-    }else{
-      state.error = false
-      state.errorText = ""
-    }
+  loading: (state, f) => {
+    state.loading = f
   },
-  set_accessToken: (state, data) => { state.accessToken = data },
-  set_refreshToken: (state, data) => { state.refreshToken = data },
-  set_type: (state, data) => { state.type = data },
-  toggleInProcess: (state) => { state.inProcess = !state.inProcess }
+  error_detect: (state, f = false) => {
+    state.error.detect = f
+  },
+  error_message: (state, messageCode = '') => {
+    let msg = ''
+    if (messageCode !== '')
+      msg = i18n.t('messageCode.' + messageCode)
+      state.error.message = msg
+  },
+  token_access: (state, token = '') => {
+    state.token.access = token
+  },
+  token_refresh: (state, token = '') => {
+    state.token.refresh = token
+  },
+  token_type: (state, type = '') => {
+    state.token.type = type
+  }
 }
 
 export default  {

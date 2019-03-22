@@ -62,12 +62,12 @@
 
                     <template v-else-if="itemHeader==='wareColorModel'">
 
-                      <ChangeColorModelComponent
-                        v-on:success-save="successSaveColormodel"
-                        :wareCardCode="infoData['wareCardCode']"
-                        :colorModel="infoData[itemHeader]"
-                        :showEditColormodel="showEditColormodel"
-                      ></ChangeColorModelComponent>
+                      <!--<ChangeColorModelComponent-->
+                        <!--v-on:success-save="successSaveColormodel"-->
+                        <!--:wareCardCode="infoData['wareCardCode']"-->
+                        <!--:colorModel="infoData[itemHeader]"-->
+                        <!--:showEditColormodel="showEditColormodel"-->
+                      <!--&gt;</ChangeColorModelComponent>-->
 
                       <!--<template v-if="infoData[itemHeader] === null">-->
                         <!--<span class="body-2 red&#45;&#45;text">ЦМ отсутствует</span>-->
@@ -93,7 +93,7 @@
                         <div v-for="item in infoData[itemHeader]">{{item}}</div>
                       </template>
                       <template v-else>
-                        Нет данных
+                         Нет данных
                       </template>
                     </template>
 
@@ -300,7 +300,7 @@
   import dialogHistoryImagest from "./dialog_history-images"
   import dialogFullsizePhoto from "./dialog-fullsize-photo"
   import dialogPerspective from "./dialog-perspective"
-  import ChangeColorModelComponent from "@/components/change-colorModel"
+  // import ChangeColorModelComponent from "@/components/change-colorModel"
 
   export default {
     name: 'CardsGood',
@@ -310,7 +310,7 @@
       dialogHistoryImagest: dialogHistoryImagest,
       dialogFullsizePhoto: dialogFullsizePhoto,
       dialogPerspective: dialogPerspective,
-      ChangeColorModelComponent: ChangeColorModelComponent
+      // ChangeColorModelComponent: ChangeColorModelComponent
     },
     data: () => ({
       loading: false,

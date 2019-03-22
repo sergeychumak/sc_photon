@@ -23,17 +23,18 @@
           <v-list-tile avatar color="blue" class="pt-3" style="height: 85px; background: #f1f8ff">
             <v-list-tile-avatar>
               <v-badge overlap @click="" color="blue">
-                <span slot="badge" >3</span>
+                <!--<span slot="badge" >3</span>-->
                 <v-avatar>
-                  <img src="https://pp.userapi.com/c628124/v628124157/3edeb/hVAEfo3snwI.jpg?ava=1">
+                  <v-icon large>account_box</v-icon>
+                  <!--<img src="https://pp.userapi.com/c628124/v628124157/3edeb/hVAEfo3snwI.jpg?ava=1">-->
                 </v-avatar>
               </v-badge>
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title class="body-2">Чумак Сергей</v-list-tile-title>
+              <v-list-tile-title class="body-2">{{NAME}}</v-list-tile-title>
               <v-list-tile-sub-title>
-                <span class="caption brown--text text--lighten-3 pr-1">SChumak</span>
-                <span class="caption brown--text text--lighten-3">Разрабочик</span>
+                <span class="caption brown--text text--lighten-3 pr-1">{{LOGIN}}</span>
+                <!--<span class="caption brown&#45;&#45;text text&#45;&#45;lighten-3">Разрабочик</span>-->
               </v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -53,17 +54,17 @@
             </v-list-tile-content>
           </router-link>
 
-          <router-link tag="v-list-tile" :to="{ name: 'settings' }">
-            <v-list-tile-avatar>
-              <v-tooltip bottom>
-                <v-icon slot="activator">settings</v-icon>
-                <span>Настройки</span>
-              </v-tooltip>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title class="body-1">Настройки</v-list-tile-title>
-            </v-list-tile-content>
-          </router-link>
+          <!--<router-link tag="v-list-tile" :to="{ name: 'settings' }">-->
+            <!--<v-list-tile-avatar>-->
+              <!--<v-tooltip bottom>-->
+                <!--<v-icon slot="activator">settings</v-icon>-->
+                <!--<span>Настройки</span>-->
+              <!--</v-tooltip>-->
+            <!--</v-list-tile-avatar>-->
+            <!--<v-list-tile-content>-->
+              <!--<v-list-tile-title class="body-1">Настройки</v-list-tile-title>-->
+            <!--</v-list-tile-content>-->
+          <!--</router-link>-->
 
           <router-link tag="v-list-tile" :to="{ name: 'uploadRetouch' }">
             <v-list-tile-avatar>
@@ -141,8 +142,8 @@
 
   import SnackbarComponents from "@/components/snackbar"
   import SnackbarComponents_v1 from "@/components/v1/snackbar"
-
   import { UpdateEmit } from "@/utils/updateEmit"
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
     name: 'Layout_V1',
@@ -153,6 +154,20 @@
         mini: true,
         refsSync: null
       }
+    },
+    mounted: function(){
+      this.getCurrentAccountUser()
+    },
+    methods: {
+      ...mapActions( "account", {
+        getCurrentAccountUser: "getCurrentAccountUser"
+      })
+    },
+    computed: {
+      ...mapGetters( "account", {
+        NAME: 'name',
+        LOGIN: 'login'
+      })
     },
     components: {
       Snackbar: SnackbarComponents,

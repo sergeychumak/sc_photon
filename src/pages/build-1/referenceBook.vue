@@ -22,6 +22,14 @@
               <v-list-tile-title class="caption">{{$t('labels.users')}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
+
+          <v-list-tile @click="$router.push({name:'referenceBookRoles'})">
+            <v-list-tile-avatar><v-icon>group</v-icon></v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title class="caption">{{$t('labels.roles')}}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
         </v-list>
       </v-navigation-drawer>
     </v-flex>

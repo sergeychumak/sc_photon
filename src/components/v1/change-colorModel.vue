@@ -22,6 +22,9 @@
         <v-icon small>close</v-icon>
       </v-btn>
     </template>
+    <v-alert :value="errorsFlag" type="error">
+      {{errorsMessage}}
+    </v-alert>
   </div>
 </template>
 
@@ -50,18 +53,23 @@
         },
         errors: {
           ware_color_model_not_found: false
-        }
+        },
+
+        errorsFlag: false,
+        errorsMessage: ""
+
       }
     },
     methods: {
 
-      ...mapActions("main", {
-        POST_REQUEST: "postRequest",
+      ...mapActions( "wareCardController", {
+        updateWareCardColorModel: "updateWareCardColorModel"
       }),
 
       close: function () {
         this.form.colorModel = null
         this.editType = false
+        this.errorsFlag = false
       },
       edit: function () {
         this.editType = true
@@ -70,20 +78,20 @@
 
         this.loading = true
 
-        this.POST_REQUEST({
-          url:"wareCard.update.colorModel",
-          data: {
+        this.updateWareCardColorModel({
             "wareCardCode": this.wareCardCode,
             "wareCardColorModel": this.form.colorModel
-          }
         })
         .then(
           ()=>{
             this.editType = false
             this.loading = false
+            this.errorsFlag = false
           },
           (e) => {
             this.loading = false
+            this.errorsFlag = true
+            this.errorsMessage = this.$t('messageCode.'+ e.data.messageCode)
           }
         )
         

@@ -45,61 +45,7 @@
 
      <v-flex shrink>
        <v-navigation-drawer permanent class="pa-2 elevation-5">
-
-         <v-card v-for="itemHeader in infoHeaders" class="mb-2">
-           <div class="blue lighten-5 pa-1 pl-2 caption font-weight-bold">{{$t('TABLE_KEY.' + key + "." + itemHeader)}}</div>
-           <div class="pa-2 caption">
-
-
-             <template v-if="itemHeader==='wareCardCreateDate'">
-               {{convertTimeToDate(infoData[itemHeader])}}
-             </template>
-
-             <template v-else-if="itemHeader==='wareCardStatusName'">
-               <v-select
-                 solo
-                 v-model="form.wareCardStatus"
-                 :label="$t('STATUS.KT.' + infoData['wareCardStatusName'] )"
-                 :items="infoData['wareCardStatusWorkflowDtoList']"
-                 item-text="nextWareCardStatusName"
-                 item-value="nextWareCardStatusCode"
-                 hide-details
-                 class="caption"
-               >
-                 <template slot="selection" slot-scope="data">
-                   <div class="caption">{{$t('STATUS.KT.' + data.item.nextWareCardStatusName )}}</div>
-                 </template>
-                 <template slot="item" slot-scope="data">
-                   <div class="caption">{{$t('STATUS.KT.' + data.item.nextWareCardStatusName )}}</div>
-                 </template>
-               </v-select>
-             </template>
-
-             <template v-else-if="itemHeader==='barcodeList' || itemHeader==='articleNumberList' || itemHeader==='guidList'">
-               <template v-if="infoData[itemHeader].length > 0">
-                 <div v-for="item in infoData[itemHeader]">{{item}}</div>
-               </template>
-               <template v-else>
-                 <span class="red--text font-weight-bold">Нет данных</span>
-               </template>
-             </template>
-
-             <template v-else-if="itemHeader==='wareColorModel'">
-               <ChangeColorModelComponent
-                 v-on:success-save="this.getDetail()"
-                 :wareCardCode="infoData['wareCardCode']"
-                 :colorModel="infoData[itemHeader]"
-                 :showEditColormodel="showEditColormodel"
-               ></ChangeColorModelComponent>
-             </template>
-
-             <template v-else>
-               {{infoData[itemHeader]}}
-             </template>
-
-           </div>
-         </v-card>
-
+         <wareCardDetail></wareCardDetail>
        </v-navigation-drawer>
      </v-flex>
 
@@ -172,100 +118,6 @@
            ></WrapCard>
 
 
-
-
-           <!--<v-card class="pb-3">-->
-             <!--<v-layout row wrap>-->
-               <!--<v-flex-->
-                 <!--v-for="(image, index) in item.photoList"-->
-                 <!--:key="index" xs3 d2-flex class="elevation-0"-->
-                 <!--style="position: relative"-->
-               <!--&gt;-->
-
-                 <!--<div class="ma-2 pa-2 "-->
-                    <!--style="border:1px #2196f3;"-->
-                    <!--:style="{-->
-                      <!--'background': in_listCheckedPhoto(image.photoCode) ? '#fff' : '#ebf8ff',-->
-                      <!--'border-style': in_listCheckedPhoto(image.photoCode) ? 'dashed' : 'solid'-->
-                    <!--}"-->
-                 <!--&gt;-->
-                   <!--<v-layout>-->
-                     <!--<v-flex class="caption">{{image.originalFileName}}</v-flex>-->
-                     <!--<v-flex class="caption text-xs-right">{{image.photographerUserName}}</v-flex>-->
-                   <!--</v-layout>-->
-                   <!--<v-layout>-->
-                     <!--<v-flex class="caption">{{convertTimeToDate(image.photoFileCreateDate)}}</v-flex>-->
-                     <!--<v-flex class="caption text-xs-right">{{image.shootingFormatName}}</v-flex>-->
-                   <!--</v-layout>-->
-                   <!--<v-layout class="mt-3 mb-2">-->
-                     <!--<v-flex>-->
-                       <!--<div-->
-                         <!--:style="{-->
-                            <!--width:'100%',-->
-                            <!--height:'150px',-->
-                            <!--backgroundSize: '95%',-->
-                            <!--backgroundPosition: 'center center',-->
-                            <!--backgroundImage: 'url(' + getUrlImage(image.photoFileCodePreview) + ')',-->
-                            <!--border: '1px dashed #ddd'-->
-                          <!--}"-->
-                       <!--&gt;</div>-->
-                     <!--</v-flex>-->
-                   <!--</v-layout>-->
-
-                   <!--<v-layout>-->
-
-                     <!--<v-flex>-->
-                       <!--<template v-if="in_listCheckedPhoto(image.photoCode)">-->
-                         <!--<v-btn-->
-                           <!--class="pa-0 ma-0"-->
-                           <!--@click="selectedImage(image.photoCode, item.photoStatusName)"-->
-                           <!--small icon>-->
-                           <!--<v-icon>check_box_outline_blank</v-icon>-->
-                         <!--</v-btn>-->
-                       <!--</template>-->
-                       <!--<template v-else>-->
-                         <!--<v-btn-->
-                           <!--class="pa-0 ma-0"-->
-                           <!--@click="unselectedImage(image.photoCode)"-->
-                           <!--small icon>-->
-                           <!--<v-icon color="blue">check_box</v-icon>-->
-                         <!--</v-btn>-->
-                       <!--</template>-->
-                     <!--</v-flex>-->
-
-                     <!--<v-flex shrink>-->
-
-                       <!--<v-tooltip bottom>-->
-                         <!--<v-btn-->
-                           <!--@click="$router.push({name: 'image-history' , params: {id: image.photoCode}})"-->
-                           <!--class="pa-0 ma-0"-->
-                           <!--color="teal"-->
-                           <!--slot="activator"-->
-                           <!--small flat icon-->
-                         <!--&gt;<v-icon color="teal" class="pa-0 ma-0">image</v-icon></v-btn>-->
-                         <!--<span>История</span>-->
-                       <!--</v-tooltip>-->
-
-                       <!--<v-tooltip bottom>-->
-                         <!--<v-btn-->
-                           <!--@click="$router.push({name: 'image-show' , params: {id: image.photoFileCodeMain}})"-->
-                           <!--class="pa-0 ma-0"-->
-                           <!--color="blue"-->
-                           <!--slot="activator"-->
-                           <!--small flat icon-->
-                         <!--&gt;<v-icon color="blue" class="pa-0 ma-0">crop_original</v-icon></v-btn>-->
-                         <!--<span>Оригинал</span>-->
-                       <!--</v-tooltip>-->
-
-                     <!--</v-flex>-->
-
-                   <!--</v-layout>-->
-
-                 <!--</div>-->
-
-               <!--</v-flex>-->
-             <!--</v-layout>-->
-           <!--</v-card>-->
          </v-expansion-panel-content>
        </v-expansion-panel>
 
@@ -301,18 +153,21 @@
 <script>
   import {mapActions} from 'vuex'
   import {convertDate} from "@/utils/mixins/date"
-  import ChangeColorModelComponent from "@/components/v1/change-colorModel"
+  // import ChangeColorModelComponent from "@/components/v1/change-colorModel"
 
   import WrapCardComponent from "@/components/build-1/card/wrapCard"
   import UploadFilesComponent from "@/components/build-1/upload-files"
+
+  import wareCardDetailComponent from "@/components/wareCardDetail"
 
   export default {
     name: 'card-edit',
     mixins: [convertDate],
     components:{
-      ChangeColorModelComponent: ChangeColorModelComponent,
+      // ChangeColorModelComponent: ChangeColorModelComponent,
       WrapCard: WrapCardComponent,
-      UploadFiles: UploadFilesComponent
+      UploadFiles: UploadFilesComponent,
+      wareCardDetail: wareCardDetailComponent
     },
     data: function(){
       return {
@@ -360,12 +215,18 @@
       }
     },
     mounted: function(){
-      this.getDetail()
+      //this.getDetail()
+      this.getBlocks()
       if (this.$route.query['panel']){
         this.panel = parseInt(this.$route.query['panel'])
       }
     },
     methods: {
+
+      ...mapActions("photoController", {
+        getPhotoBlockList: "getPhotoBlockList"
+      }),
+
       ...mapActions("main", {
         POST_REQUEST: "postRequest",
         GET_REQUEST: "getRequest",
@@ -373,26 +234,6 @@
         ERROR_HANDLER: "errorHandler"
       }),
 
-      getDetail: function(){
-        this.GET_REQUEST({
-          url: "wareCard.detail",
-          appData: "/" + this.$route.params.id
-        })
-          .then(res=>{
-            this.key = res.key
-            this.infoHeaders = res.headers
-            this.infoData = res.data
-
-            this.getBlocks()
-
-            //Смотрим каккие ракурсы есть и сколько фоток привязанно
-              this.GET_REQUEST({url: "perspective.view", appData: "/" + res.data.wareCardCode})
-                .then(res=>{ this.perspective.view = res.data.length })
-              this.GET_REQUEST({url: "perspective.chosen", appData: "/" + res.data.wareCardCode})
-                .then(res=>{ this.perspective.chosen = res.data.length })
-            
-          })
-      },
 
       getBlocks: function(){
         this.loading = true
@@ -407,22 +248,22 @@
       },
 
       changeWareCardStatus: function(f){
-        if (f){
-          this.POST_REQUEST({
-            url: "wareCard.setStatus",
-            data: {
-              wareCardCode: this.infoData.wareCardCode,
-              wareCardStatusCode: this.form.wareCardStatus
-            }
-          })
-          .then(()=>{
-            this.dialog.yesno = false
-            this.getDetail()
-          })
-        }else{
-          this.dialog.yesno = false
-          this.form.wareCardStatus = null
-        }
+        // if (f){
+        //   this.POST_REQUEST({
+        //     url: "wareCard.setStatus",
+        //     data: {
+        //       wareCardCode: this.infoData.wareCardCode,
+        //       wareCardStatusCode: this.form.wareCardStatus
+        //     }
+        //   })
+        //   .then(()=>{
+        //     this.dialog.yesno = false
+        //     this.getDetail()
+        //   })
+        // }else{
+        //   this.dialog.yesno = false
+        //   this.form.wareCardStatus = null
+        // }
       },
 
       getUrlImage: function (id) {
@@ -535,7 +376,3 @@
   }
 
 </script>
-
-<style>
-
-</style>

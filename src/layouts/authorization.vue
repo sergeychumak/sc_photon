@@ -2,28 +2,47 @@
   <v-app>
     <v-content>
       <v-container fluid fill-height>
-        <v-layout align-center justify-center>
-          <v-flex></v-flex>
+        <v-layout>
           <v-flex shrink>
-            <v-card class="elevation-12" width="500">
-              <v-toolbar dark color="primary">
+            <v-card class="elevation-0" width="500" color="transparent">
+              <v-toolbar color="transparent" class="elevation-0">
                 <v-toolbar-title>{{$t('pagesTitle.auth')}}</v-toolbar-title>
               </v-toolbar>
-              <v-card-text>
+              <v-card-text class="pb-0">
                 <v-form>
-                  <v-text-field prepend-icon="person" name="username" :label="$t('labels.login')" type="text" v-model="username" ></v-text-field>
-                  <v-text-field id="password" prepend-icon="lock" name="password" :label="$t('labels.password')" type="password" v-model="password"></v-text-field>
+                  <v-text-field
+                    v-model="username"
+                    :label="$t('labels.login')"
+                    class="mb-3"
+                    prepend-icon="person"
+                    name="username"
+                    type="text"
+                    solo
+                    hide-details
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="password"
+                    :label="$t('labels.password')"
+                    class="mb-3"
+                    prepend-icon="lock"
+                    name="password"
+                    type="password"
+                    id="password"
+                    solo
+                    hide-details
+                  ></v-text-field>
                 </v-form>
               </v-card-text>
-              <v-card-actions>
+              <v-card-actions class="pt-0">
                 <v-spacer></v-spacer>
                 <v-btn
-                  :loading="auth_inProcess"
-                  :disabled="auth_inProcess"
+                  :loading="loading"
+                  :disabled="loading"
                   color="primary"
+                  class="mr-2"
                   @click="login">{{$t('btns.enter')}}</v-btn>
               </v-card-actions>
-              <v-alert :value="error" type="error">{{errorText}}</v-alert>
+              <v-alert :value="error_detect" type="error">{{error_message}}</v-alert>
             </v-card>
           </v-flex>
           <v-flex></v-flex>
@@ -51,15 +70,19 @@ export default {
       const { username, password } = this
       this
         .auth_login({ username, password })
-        .then(()=>{this.$router.push({name:'main'})})
-        .catch(()=>{this.$router.push({name:'auth'})})
+        .then(()=>{
+          this.$router.push({name:'main'})
+        })
+        .catch(()=>{
+          this.$router.push({name:'auth'})
+        })
     }
   },
   computed: {
     ...mapGetters('auth' , {
-      auth_inProcess: 'inProcess',
-      error: 'error',
-      errorText: 'errorText'
+      loading: 'loading',
+      error_detect: 'error_detect',
+      error_message: 'error_message',
     })
   }
 }
